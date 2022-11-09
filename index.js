@@ -50,17 +50,41 @@ async function run() {
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
-        app.patch('/reviews/:id', async (req, res) => {
+        // app.patch('/reviews/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //    // const status = req.body.status;
+        //    const review=req.body;
+        //    const option={upsert:true};
+        //     const query = { _id: ObjectId(id) };
+        //     const updateDoc = {
+        //         $set: {
+        //             //status: status
+
+        //         }
+        //     }
+        //     const result = await reviewCollection.updateOne(query, updateDoc,option);
+        //     res.send(result);
+        // });
+        app.put('/reviews/:id', async (req, res) => {
             const id = req.params.id;
-            const status = req.body.status;
             const query = { _id: ObjectId(id) };
-            const updateDoc = {
-                $set: {
-                    status: status
-                }
-            }
-            const result = await reviewCollection.updateOne(query, updateDoc);
-            res.send(result);
+            const review = req.body;
+            console.log(review);
+            // const option = { upsert: true };
+            // const updatedDoc = {
+            //     $set: {
+            //         service: review.service,
+            //         serviceName: review.serviceName,
+            //         price: review.price,
+            //         customer: review.customer,
+            //         email: review.email,
+            //         status: review.status,
+            //         phone: review.phone,
+            //         message: review.message
+            //     }
+            // }
+            // const result = await reviewCollection.updateOne(query, option);
+            // res.send(result);
         });
         app.delete('/reviews/:id', async (req, res) => {
             const id = req.params.id;
