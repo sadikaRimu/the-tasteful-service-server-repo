@@ -28,6 +28,11 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
+        });
         //  review api
         app.get('/reviews', async (req, res) => {
             let query = {};
@@ -45,7 +50,18 @@ async function run() {
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
-
+        app.patch('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    status: status
+                }
+            }
+            const result = await reviewCollection.updateOne(query, updateDoc);
+            res.send(result);
+        });
         app.delete('/reviews/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
