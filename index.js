@@ -18,6 +18,12 @@ async function run() {
         const reviewCollection = client.db('assignment11').collection('reviews');
         app.get('/services', async (req, res) => {
             const query = {};
+            const cursor = serviceCollection.find(query).sort({ _id: -1 }).limit(3);
+            const services = await cursor.toArray();
+            res.send(services);
+        });
+        app.get('/servicesall', async (req, res) => {
+            const query = {};
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
@@ -69,7 +75,7 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const review = req.body;
-            console.log(review);
+            // console.log(review);
             // const option = { upsert: true };
             // const updatedDoc = {
             //     $set: {
