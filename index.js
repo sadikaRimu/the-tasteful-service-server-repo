@@ -66,7 +66,7 @@ async function run() {
         //  review api
         app.get('/reviews', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
-            console.log('inside orders api', decoded);
+            // console.log('inside orders api', decoded);
             if (decoded.email !== req.query.email) {
                 return res.status(401).send({ message: 'unauthorized access' });
             }
@@ -76,6 +76,12 @@ async function run() {
                     email: req.query.email
                 };
             }
+            const cursor = reviewCollection.find(query).sort({ _id: -1 });
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+        app.get('/reviewsall', async (req, res) => {
+            const query = {};
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
             res.send(reviews);
@@ -104,22 +110,22 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const review = req.body;
-            // console.log(review);
-            // const option = { upsert: true };
-            // const updatedDoc = {
-            //     $set: {
-            //         service: review.service,
-            //         serviceName: review.serviceName,
-            //         price: review.price,
-            //         customer: review.customer,
-            //         email: review.email,
-            //         status: review.status,
-            //         phone: review.phone,
-            //         message: review.message
-            //     }
-            // }
-            // const result = await reviewCollection.updateOne(query, option);
-            // res.send(result);
+            console.log(review);
+            const option = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    service: review.service,
+                    serviceName: review.serviceName,
+                    price: review.price,
+                    customer: review.customer,
+                    email: review.email,
+                    status: review.status,
+                    phone: review.phone,
+                    message: review.message
+                }
+            }
+            const result = await reviewCollection.updateOne(query, option);
+            res.send(result);
         });
         app.delete('/reviews/:id', async (req, res) => {
             const id = req.params.id;
