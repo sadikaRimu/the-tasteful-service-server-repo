@@ -114,17 +114,17 @@ async function run() {
             const option = { upsert: true };
             const updatedDoc = {
                 $set: {
-                    service: review.service,
-                    serviceName: review.serviceName,
-                    price: review.price,
-                    customer: review.customer,
-                    email: review.email,
-                    status: review.status,
+                    // service: review.service,
+                    // serviceName: review.serviceName,
+                    // price: review.price,
+                    // customer: review.customer,
+                    // email: review.email,
+                    // status: review.status,
                     phone: review.phone,
                     message: review.message
                 }
             }
-            const result = await reviewCollection.updateOne(query, option);
+            const result = await reviewCollection.updateOne(query, updatedDoc, option);
             res.send(result);
         });
         app.delete('/reviews/:id', async (req, res) => {
